@@ -58,7 +58,7 @@ public class User implements Serializable {
 
 	private String info;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "user_created_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private Set<Course> createdCourses = new HashSet<>();
 
@@ -67,6 +67,18 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserLearningPathProgress> learningPathsProgress;
+	
+	public User() {
+		
+	}
+	
+	public User(String firstName, String lastName, String email, String encryptedPassword) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.encryptedPassword = encryptedPassword;
+	}
 
 	public void updateUserLearningProgress(LearningPath learningPath, Float progressRate) {
 		for (Iterator<UserLearningPathProgress> iterator = learningPathsProgress.iterator(); iterator.hasNext();) {
@@ -145,4 +157,6 @@ public class User implements Serializable {
 	public int hashCode() {
 		return 19;
 	}
+
+	
 }

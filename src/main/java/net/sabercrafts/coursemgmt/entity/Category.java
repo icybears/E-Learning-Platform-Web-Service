@@ -33,6 +33,16 @@ public class Category implements Serializable{
 	@OneToMany(mappedBy = "category")
 	List<Course> courses = new ArrayList<>();
 	
+	public Category() {
+		super();
+	}
+
+	public Category(String name, String description) {
+		super();
+		this.name = name;
+		this.description = description;
+	}
+	
 	public void addCourse(Course course) {
 		course.setCategory(this);
 	}
@@ -53,4 +63,7 @@ public class Category implements Serializable{
 	    public int hashCode() {
 	        return 13;
 	    }
+
+
+		
 }

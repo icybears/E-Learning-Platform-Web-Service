@@ -25,13 +25,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 
-@Data
+
 @Entity
+@Data
 public class Course implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -73,9 +71,20 @@ public class Course implements Serializable{
 			orphanRemoval = true)
 	private List<Enrollment> enrollments = new ArrayList<>();
 	
+	public Course() {
+		super();
+	}
+	
+	public Course(String title, String description, Category category) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.category = category;
+	}
+
 	
 	public void setCategory(Category category) {
-		System.out.println("custom set category on course entity called");
+		
 		if(this.category != null) {
 			this.category.getCourses().remove(this);
 		}
