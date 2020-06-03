@@ -16,9 +16,6 @@ import lombok.Data;
 @Entity
 public class Module implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -29,6 +26,17 @@ public class Module implements Serializable{
 	
 	@ManyToOne
 	private Course course;
+	
+	public Module() {
+		super();
+	}
+
+	public Module(String title, Course course) {
+		super();
+		this.title = title;
+		this.course = course;
+	}
+
 	
 	public void setCourse(Course course) {
 		

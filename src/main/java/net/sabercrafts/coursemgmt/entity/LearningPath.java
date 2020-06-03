@@ -21,9 +21,6 @@ import lombok.Data;
 @Table(name = "learning_path")
 public class LearningPath implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,6 +33,16 @@ public class LearningPath implements Serializable {
 
 	@ManyToMany(mappedBy = "learningPaths")
 	private Set<Course> courses = new HashSet<>();
+
+	public LearningPath() {
+		super();
+	}
+	
+	public LearningPath(String title, String description) {
+		super();
+		this.title = title;
+		this.description = description;
+	}
 
 
 	public void addCourse(Course course) {

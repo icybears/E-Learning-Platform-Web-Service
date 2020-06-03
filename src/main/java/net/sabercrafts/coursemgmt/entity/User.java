@@ -90,8 +90,8 @@ public class User implements Serializable {
 			}
 
 		}
-
-		UserLearningPathProgress progress = new UserLearningPathProgress(this, learningPath);
+		// if doesn't exist, create it and set it
+		UserLearningPathProgress progress = new UserLearningPathProgress(this, learningPath, progressRate);
 		this.learningPathsProgress.add(progress);
 
 	}

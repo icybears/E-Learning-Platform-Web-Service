@@ -35,13 +35,14 @@ public class UserLearningPathProgress {
 		super();
 	}
 
-	public UserLearningPathProgress(User user, LearningPath learningPath) {
+
+	public UserLearningPathProgress(User user, LearningPath learningPath, Float progressRate) {
 		super();
 		this.user = user;
 		this.learningPath = learningPath;
 		this.id = new UserLearningPathProgressId(user.getId(),learningPath.getId());
+		this.progressRate = progressRate;
 	}
-	
 	
 	@Override
     public boolean equals(Object o) {
