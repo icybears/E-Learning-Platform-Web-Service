@@ -32,10 +32,7 @@ public class Enrollment implements Serializable {
 	private User user;
 
 	@Column(name="completion_rate")
-	private Float completionRate;
-	
-	@Column(name="is_completed")
-	private Boolean isCompleted;
+	private Float completionRate = 0f;
 	
 	@Column(name="created_at")
 	@CreationTimestamp

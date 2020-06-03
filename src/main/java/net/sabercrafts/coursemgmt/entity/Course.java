@@ -71,6 +71,12 @@ public class Course implements Serializable{
 			orphanRemoval = true)
 	private List<Enrollment> enrollments = new ArrayList<>();
 	
+	@ManyToMany
+	@JoinTable(name="course_tag", 
+	joinColumns= @JoinColumn(name="course_id"),
+	inverseJoinColumns = @JoinColumn(name="tag_id"))
+	private Set<Tag> tags = new HashSet<>();
+	
 	public Course() {
 		super();
 	}
@@ -82,6 +88,15 @@ public class Course implements Serializable{
 		this.category = category;
 	}
 
+	public void addTag(Tag tag) {
+		this.tags.add(tag);
+		tag.getCourses().add(this);
+	}
+	
+	public void removeTag(Tag tag) {
+		this.tags.remove(tag);
+		tag.getCourses().remove(this);
+	}
 	
 	public void setCategory(Category category) {
 		

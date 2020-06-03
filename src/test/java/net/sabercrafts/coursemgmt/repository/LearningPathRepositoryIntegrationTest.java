@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import net.sabercrafts.coursemgmt.entity.LearningPath;
 
 @SpringBootTest
-@Transactional
 class LearningPathRepositoryIntegrationTest {
 
 	private LearningPath savedLearningPath;
@@ -44,6 +43,8 @@ class LearningPathRepositoryIntegrationTest {
 		LearningPath learningPath = learningPathRepository.findById(savedLearningPath.getId()).get();
 		
 		learningPath.setDescription("Edited description of learningPath Test");
+		
+		learningPathRepository.save(learningPath);
 		
 		assertEquals("Edited description of learningPath Test",learningPathRepository.findById(savedLearningPath.getId()).get().getDescription());
 	}

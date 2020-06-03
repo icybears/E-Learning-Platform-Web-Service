@@ -18,7 +18,6 @@ import net.sabercrafts.coursemgmt.entity.User;
 import net.sabercrafts.coursemgmt.entity.UserLearningPathProgress;
 
 @SpringBootTest
-@Transactional
 class UserLearningPathProgressRepositoryIntegrationTest {
 
 	private UserLearningPathProgress savedUserLearningPathProgress;
@@ -60,6 +59,8 @@ class UserLearningPathProgressRepositoryIntegrationTest {
 		UserLearningPathProgress userLearningPathProgress = userLearningPathProgressRepository.findById(savedUserLearningPathProgress.getId()).get();
 		
 		userLearningPathProgress.setProgressRate(.3f);
+		
+		userLearningPathProgressRepository.save(userLearningPathProgress);
 		
 		assertEquals(.3f,userLearningPathProgressRepository.findById(savedUserLearningPathProgress.getId()).get().getProgressRate());
 	}

@@ -29,7 +29,7 @@ public class UserLearningPathProgress {
 	private LearningPath learningPath;
 	
 	@Column(name="progress_rate")
-	private Float progressRate;
+	private Float progressRate = 0f;
 
 	public UserLearningPathProgress() {
 		super();

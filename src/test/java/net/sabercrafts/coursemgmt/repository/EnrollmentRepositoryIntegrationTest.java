@@ -19,7 +19,6 @@ import net.sabercrafts.coursemgmt.entity.Enrollment;
 import net.sabercrafts.coursemgmt.entity.User;
 
 @SpringBootTest
-@Transactional
 class EnrollmentRepositoryIntegrationTest {
 
 	private Enrollment savedEnrollment;
@@ -64,6 +63,8 @@ class EnrollmentRepositoryIntegrationTest {
 		Enrollment enrollment = enrollmentRepository.findById(savedEnrollment.getId()).get();
 		
 		enrollment.setCompletionRate(.5f);
+		
+		enrollmentRepository.save(enrollment);
 		
 		assertEquals(.5f,enrollmentRepository.findById(savedEnrollment.getId()).get().getCompletionRate());
 	}

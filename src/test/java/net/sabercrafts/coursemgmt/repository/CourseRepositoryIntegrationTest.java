@@ -20,7 +20,6 @@ import net.sabercrafts.coursemgmt.entity.Category;
 import net.sabercrafts.coursemgmt.entity.Course;
 
 @SpringBootTest
-@Transactional
 @TestInstance(Lifecycle.PER_CLASS)
 class CourseRepositoryIntegrationTest {
 
@@ -61,6 +60,8 @@ class CourseRepositoryIntegrationTest {
 		Course course = courseRepository.findById(savedCourse.getId()).get();
 		
 		course.setDescription("Edited description of course Test");
+		
+		courseRepository.save(course);
 		
 		assertEquals("Edited description of course Test",courseRepository.findById(savedCourse.getId()).get().getDescription());
 	}

@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import net.sabercrafts.coursemgmt.entity.User;
 
 @SpringBootTest
-@Transactional
 class UserRepositoryIntegrationTest {
 
 	private User savedUser;

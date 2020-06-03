@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import net.sabercrafts.coursemgmt.entity.Category;
 
 @SpringBootTest
-@Transactional
 class CategoryRepositoryIntegrationTest {
 
 	private Category savedCategory;
@@ -46,6 +45,8 @@ class CategoryRepositoryIntegrationTest {
 		Category category = categoryRepository.findById(savedCategory.getId()).get();
 		
 		category.setDescription("Edited description of category Test");
+		
+		categoryRepository.save(category);
 		
 		assertEquals("Edited description of category Test",categoryRepository.findById(savedCategory.getId()).get().getDescription());
 	}

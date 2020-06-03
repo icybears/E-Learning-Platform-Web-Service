@@ -59,6 +59,8 @@ class ModuleRepositoryIntegrationTest {
 		
 		module.setTitle("Edited title of module Test");
 		
+		moduleRepository.save(module);
+		
 		assertEquals("Edited title of module Test",moduleRepository.findById(savedModule.getId()).get().getTitle());
 	}
 	
