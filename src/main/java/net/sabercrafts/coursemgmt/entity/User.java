@@ -41,6 +41,7 @@ public class User implements Serializable {
 	@Column(name = "last_name")
 	private String lastName;
 
+	@Column(unique = true)
 	private String email;
 
 	@Column(name = "encrypted_password")

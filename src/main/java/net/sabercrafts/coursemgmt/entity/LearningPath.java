@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NaturalId;
+
 import lombok.Data;
 
 @Data
@@ -30,6 +32,9 @@ public class LearningPath implements Serializable {
 	private String title;
 
 	private String description;
+	
+	@NaturalId(mutable = true)
+	private String slug;
 
 	@ManyToMany(mappedBy = "learningPaths")
 	private Set<Course> courses = new HashSet<>();

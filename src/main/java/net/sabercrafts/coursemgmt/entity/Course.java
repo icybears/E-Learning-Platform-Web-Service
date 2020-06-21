@@ -21,9 +21,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Entity
@@ -37,6 +40,9 @@ public class Course implements Serializable{
 	private Long id;
 	
 	private String title;
+	
+	@NaturalId(mutable = true)
+	private String slug;
 	
 	private String description;
 	

@@ -1,11 +1,19 @@
 package net.sabercrafts.coursemgmt.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import net.sabercrafts.coursemgmt.entity.Course;
 
 
-public interface CourseRepository extends CrudRepository<Course, Long>{
+public interface CourseRepository extends JpaRepository<Course, Long>{
 
+	Optional<Course> findBySlug(String slug);
+	
+	boolean existsByTitle(String title);
+	
+	boolean existsBySlug(String slug);
+	
 }
