@@ -37,7 +37,7 @@ class UserLearningPathProgressRepositoryIntegrationTest {
 	
 	@BeforeEach
 	void init() {
-		user = userRepository.save(new User("test","test","test@gmail.com","test123"));
+		user = userRepository.save(new User("test","test","test","test@gmail.com","test123"));
 		learningPath = learningPathRepository.save(new LearningPath("LearningPath Test","Description of learningPath Test"));
 		savedUserLearningPathProgress = userLearningPathProgressRepository.save(new UserLearningPathProgress(user,learningPath,.2f));
 	}

@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
@@ -31,6 +32,7 @@ import lombok.Setter;
 
 @Entity
 @Data
+@SQLDelete(sql = "UPDATE course SET deleted = true WHERE id = ?")
 public class Course implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -83,6 +85,8 @@ public class Course implements Serializable{
 	inverseJoinColumns = @JoinColumn(name="tag_id"))
 	private Set<Tag> tags = new HashSet<>();
 	
+	private boolean deleted;
+	
 	public Course() {
 		super();
 	}
@@ -118,6 +122,18 @@ public class Course implements Serializable{
 	
 	public void addModule(Module module) {
 		module.setCourse(this);
+	}
+	
+	public void removeModule(Module module) {
+		module.setCourse(null);
+	}
+	
+	public void addEnrollment(Enrollment enrollment) {
+		enrollment.setCourse(this);
+	}
+	
+	public void removeEnrollment(Enrollment enrollment) {
+		enrollment.setCourse(null);
 	}
 	
 	public void addToLearningPath(LearningPath learningPath) {

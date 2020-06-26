@@ -64,5 +64,17 @@ public class Enrollment implements Serializable {
 	public int hashCode() {
 		return Objects.hash(course, user);
 	}
+	
+	public void setCourse(Course course) {
+		
+		if(this.course != null) {
+			this.course.getEnrollments().remove(this);
+		}
+		this.course = course;
+		
+		if(course != null) {
+			this.course.getEnrollments().add(this);
+		}
+	}
 
 }

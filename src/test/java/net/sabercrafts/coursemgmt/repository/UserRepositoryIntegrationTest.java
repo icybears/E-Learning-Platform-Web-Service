@@ -23,7 +23,7 @@ class UserRepositoryIntegrationTest {
 	
 	@BeforeEach
 	void init() {
-		savedUser = userRepository.save(new User("test","test","test@gmail.com","test123"));
+		savedUser = userRepository.save(new User("test","test","test","test@gmail.com","test123"));
 	}
 	
 	@Test

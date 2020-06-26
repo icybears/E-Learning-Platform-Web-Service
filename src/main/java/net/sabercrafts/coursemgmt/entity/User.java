@@ -18,14 +18,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
 @Data
 @Entity
+@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?")
 public class User implements Serializable {
 
 
@@ -34,6 +40,10 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NaturalId
+	@Column(unique= true)
+	private String username;
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -61,24 +71,32 @@ public class User implements Serializable {
 	@JoinTable(name = "user_created_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private Set<Course> createdCourses = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user",orphanRemoval = true)
 	private List<Enrollment> enrollments = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user",  orphanRemoval = true)
 	private List<UserLearningPathProgress> learningPathsProgress;
+	
+	private boolean deleted;
 	
 	public User() {
 		
 	}
 	
-	public User(String firstName, String lastName, String email, String encryptedPassword) {
+	public User(String username, String firstName, String lastName, String email, String encryptedPassword) {
 		super();
+		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.encryptedPassword = encryptedPassword;
 	}
 
+	@PreRemove
+	public void deleteUser() {
+	this.deleted = true;
+	}
+	
 	public void updateUserLearningProgress(LearningPath learningPath, Float progressRate) {
 		for (Iterator<UserLearningPathProgress> iterator = learningPathsProgress.iterator(); iterator.hasNext();) {
 			UserLearningPathProgress progress = iterator.next();
@@ -157,5 +175,6 @@ public class User implements Serializable {
 		return 19;
 	}
 
+	
 	
 }

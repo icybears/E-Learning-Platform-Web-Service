@@ -41,7 +41,7 @@ class EnrollmentRepositoryIntegrationTest {
 	@BeforeEach
 	void init() {
 		category = categoryRepository.save(new Category("Category Test","Description of category Test"));
-		user = userRepository.save(new User("test","test","test@gmail.com","test123"));
+		user = userRepository.save(new User("test","test","test","test@gmail.com","test123"));
 		course = courseRepository.save(new Course("Title","Description",category));
 		savedEnrollment = enrollmentRepository.save(new Enrollment(course, user));
 	}
