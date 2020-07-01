@@ -17,6 +17,7 @@ import net.sabercrafts.coursemgmt.entity.Module;
 import net.sabercrafts.coursemgmt.entity.Tag;
 import net.sabercrafts.coursemgmt.entity.User;
 import net.sabercrafts.coursemgmt.service.CourseService;
+import net.sabercrafts.coursemgmt.ui.controller.model.request.CourseEditRequestModel;
 
 @RestController
 @RequestMapping("api/v1/course")
@@ -42,14 +43,19 @@ public class CourseController {
 	}
 	
 	@PutMapping(path="/{id}")
-	public Course editCourse(@PathVariable Long id, @RequestBody Course course) {
-		return courseService.edit(course);
+	public Course editCourse(@PathVariable Long id, @RequestBody CourseEditRequestModel course) {
+		return courseService.edit(id,course);
 	}
 
 	@DeleteMapping(path="/{id}")
 	public void deleteCourse(@PathVariable Long id) {
 
 		courseService.remove(id);
+	}
+	
+	@GetMapping(path="/{courseId}/module")
+	public List<Module> getCourseModules(@PathVariable Long courseId){
+		return courseService.getById(courseId).getModules();
 	}
 	
 	@PostMapping(path="/{courseId}/module")
@@ -63,14 +69,20 @@ public class CourseController {
 		return courseService.removeModule(courseId, moduleId);
 	}
 	
-	@PostMapping(path="/{courseId}/tag")
-	public Course assignTag(@PathVariable Long courseId, @RequestBody Tag tag) {
-		return courseService.addTag(courseId, tag);
+
+	@GetMapping(path="/{courseId}/tag")
+	public List<Tag> getCourseTags(@PathVariable Long courseId) {
+		return courseService.getCourseTags(courseId);
+	}
+	
+	@PutMapping(path="/{courseId}/tag/{tagId}")
+	public Course assignTag(@PathVariable Long courseId,@PathVariable Long tagId) {
+		return courseService.addTag(courseId, tagId);
 	}
 	
 	@DeleteMapping(path="/{courseId}/tag/{tagId}")
-	public Course assignTag(@PathVariable Long courseId,@PathVariable Long tagId, @RequestBody Tag tag) {
-		return courseService.removeTag(courseId, tag);
+	public Course remove(@PathVariable Long courseId,@PathVariable Long tagId) {
+		return courseService.removeTag(courseId, tagId);
 	}
 	
 	@PostMapping(path="/{courseId}/enroll")

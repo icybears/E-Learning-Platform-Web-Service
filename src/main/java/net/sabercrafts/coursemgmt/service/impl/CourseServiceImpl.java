@@ -1,9 +1,13 @@
 package net.sabercrafts.coursemgmt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import net.sabercrafts.coursemgmt.entity.Course;
 import net.sabercrafts.coursemgmt.entity.Enrollment;
@@ -18,10 +22,15 @@ import net.sabercrafts.coursemgmt.repository.ModuleRepository;
 import net.sabercrafts.coursemgmt.repository.TagRepository;
 import net.sabercrafts.coursemgmt.repository.UserRepository;
 import net.sabercrafts.coursemgmt.service.CourseService;
+import net.sabercrafts.coursemgmt.ui.controller.model.request.CourseEditRequestModel;
 import net.sabercrafts.coursemgmt.utils.SlugGenerator;
 
+@Service
 public class CourseServiceImpl implements CourseService {
 
+	@Autowired
+	private ModelMapper mapper;
+	
 	@Autowired
 	private CourseRepository courseRepository;
 	
@@ -36,6 +45,7 @@ public class CourseServiceImpl implements CourseService {
 	
 	@Autowired
 	private ModuleRepository moduleRepository;
+	
 
 	@Override
 	public Course create(Course course) {
@@ -78,20 +88,30 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public Course edit(Course course) {
+	public Course edit(Long courseId, CourseEditRequestModel course) {
+		
+		mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 
-		Course entity = fetchEntityById(course.getId());
+		Course entity = fetchEntityById(courseId);
 		
-		if(entity.getTitle() != course.getTitle()) {
+		if(course.getTitle() != null && entity.getTitle() != course.getTitle()) {
 			
-			course.setSlug(SlugGenerator.toSlug(course.getTitle()));
+			String slug = SlugGenerator.toSlug(course.getTitle());
 			
-			if(courseRepository.findBySlug(course.getSlug()).isPresent()) {
-				throw new CourseServiceException("Course with slug "+ course.getSlug() +" already exists.");
+			if(courseRepository.findBySlug(slug).isPresent()) {
+				throw new CourseServiceException("Course with slug "+ slug +" already exists.");
 			}
+			
+			entity.setSlug(slug);
 		}
+
+
 		
-		return courseRepository.save(course);
+		mapper.map(course, entity);
+
+		
+
+		return courseRepository.save(entity);
 	}
 
 	@Override
@@ -118,30 +138,38 @@ public class CourseServiceImpl implements CourseService {
 		if(module.isEmpty()) {
 			throw new CourseServiceException("Cannot remove module: module with id "+moduleId+" doesn't exist");
 		}
+		System.out.println("module: " + module.get() );
 		entity.removeModule(module.get());
 		
 		return courseRepository.save(entity);
 		
 	}
+	
 	@Override
-	public Course addTag(Long courseId, Tag tag) {
+	public List<Tag> getCourseTags(Long courseId){
+		Course entity = fetchEntityById(courseId);
+		return new ArrayList<Tag>(entity.getTags());
+	}
+	
+	@Override
+	public Course addTag(Long courseId, Long tagId) {
 		
 		Course entity = fetchEntityById(courseId);
 		
-		Optional<Tag> result = tagRepository.findById(tag.getId());
+		Optional<Tag> result = tagRepository.findById(tagId);
 		if(result.isEmpty()) {
-			throw new CourseServiceException("Tag with id "+tag.getId()+" doesn't exist");
+			throw new CourseServiceException("Tag with id "+tagId+" doesn't exist");
 		}
 		entity.addTag(result.get());
 		
 		return courseRepository.save(entity);
 	}
 	@Override
-	public Course removeTag(Long courseId, Tag tag) {
+	public Course removeTag(Long courseId, Long tagId) {
 		Course entity = fetchEntityById(courseId);
-		Optional<Tag> result = tagRepository.findById(tag.getId());
+		Optional<Tag> result = tagRepository.findById(tagId);
 		if(result.isEmpty()) {
-			throw new CourseServiceException("Tag with id "+tag.getId()+" doesn't exist");
+			throw new CourseServiceException("Tag with id "+tagId+" doesn't exist");
 		}
 		entity.removeTag(result.get());
 		

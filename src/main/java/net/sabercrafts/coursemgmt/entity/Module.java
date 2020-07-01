@@ -10,7 +10,10 @@ import javax.persistence.Id;
 
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -24,7 +27,11 @@ public class Module implements Serializable{
 	
 	private String title;
 	
+	private String content;
+	
 	@ManyToOne
+	@JsonBackReference
+	@ToString.Exclude
 	private Course course;
 	
 	public Module() {
@@ -41,13 +48,13 @@ public class Module implements Serializable{
 	public void setCourse(Course course) {
 		
 		if(this.course != null) {
-			course.getModules().remove(this);
+			this.course.getModules().remove(this);
 		}
 		
 		this.course = course;
 		
 		if(course != null) {
-			course.getModules().add(this);
+			this.course.getModules().add(this);
 		}
 		
 	}

@@ -1,5 +1,6 @@
 package net.sabercrafts.coursemgmt;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,4 +12,8 @@ public class CoursemgmtApplication {
 		SpringApplication.run(CoursemgmtApplication.class, args);
 	}
 
+	@Bean
+	public ModelMapper modelMapper() {
+	    return new ModelMapper();
+	}
 }

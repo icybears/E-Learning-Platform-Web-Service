@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 @Entity
@@ -23,7 +25,10 @@ public class Tag implements Serializable{
 	
 	private String label;
 	
+	private String slug;
+	
 	@ManyToMany(mappedBy="tags")
+	@JsonBackReference
 	private Set<Course> courses;
 	
 	public Tag() {

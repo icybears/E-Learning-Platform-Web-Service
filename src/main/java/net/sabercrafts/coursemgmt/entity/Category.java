@@ -14,7 +14,12 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -36,6 +41,8 @@ public class Category implements Serializable{
 	private String description;
 	
 	@OneToMany(mappedBy = "category")
+	@JsonIgnore
+	@ToString.Exclude
 	List<Course> courses = new ArrayList<>();
 	
 	public Category() {

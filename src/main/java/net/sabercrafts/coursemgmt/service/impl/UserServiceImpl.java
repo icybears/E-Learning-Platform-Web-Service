@@ -3,6 +3,8 @@ package net.sabercrafts.coursemgmt.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import net.sabercrafts.coursemgmt.utils.SlugGenerator;
 @Service
 public class UserServiceImpl implements UserService {
 
+	@Autowired
+	private ModelMapper mapper;
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -69,6 +74,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User edit(Long id, UserEditRequestModel user) {
 		
+		mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 
 		Optional<User> result = userRepository.findById(id);
 
@@ -79,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
 		User entity = result.get();
 		
-		BeanUtils.copyProperties(user, entity);
+		mapper.map(user, entity);
 		
 		return userRepository.save(entity);
 	}
