@@ -28,8 +28,6 @@ public class TagController {
 		return tagService.getAll();
 	}
 	
-	
-	
 	@GetMapping(path="/{id}")
 	public Tag getTagById(@PathVariable Long id) {
 		return tagService.getById(id);

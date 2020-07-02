@@ -3,6 +3,8 @@ package net.sabercrafts.coursemgmt.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +19,7 @@ import net.sabercrafts.coursemgmt.ui.controller.model.request.UserEditRequestMod
 import net.sabercrafts.coursemgmt.utils.SlugGenerator;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired

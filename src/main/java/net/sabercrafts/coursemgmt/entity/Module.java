@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.ToString;
@@ -30,7 +31,7 @@ public class Module implements Serializable{
 	private String content;
 	
 	@ManyToOne
-	@JsonBackReference
+	@JsonIgnore
 	@ToString.Exclude
 	private Course course;
 	

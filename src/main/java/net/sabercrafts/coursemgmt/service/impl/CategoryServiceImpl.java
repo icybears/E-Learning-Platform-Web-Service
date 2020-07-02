@@ -3,6 +3,7 @@ package net.sabercrafts.coursemgmt.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import net.sabercrafts.coursemgmt.service.CategoryService;
 import net.sabercrafts.coursemgmt.utils.SlugGenerator;
 
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired

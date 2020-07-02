@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sabercrafts.coursemgmt.entity.Course;
+import net.sabercrafts.coursemgmt.entity.LearningPath;
 import net.sabercrafts.coursemgmt.entity.Module;
 import net.sabercrafts.coursemgmt.entity.Tag;
 import net.sabercrafts.coursemgmt.entity.User;
@@ -30,7 +31,6 @@ public class CourseController {
 	public List<Course> getAllCourses(){
 		return courseService.getAll();
 	}
-	
 
 	@GetMapping(path="/{id}")
 	public Course getCourseById(@PathVariable Long id) {
@@ -93,5 +93,20 @@ public class CourseController {
 	@PostMapping(path="/{courseId}/unenroll")
 	public Course unenrollUser(@PathVariable Long courseId, @RequestBody User user) {
 		return courseService.unenroll(courseId, user.getId());
+	}
+	
+	@GetMapping(path="/{courseId}/learning-path")
+	public List<LearningPath> getCourseLearningPaths(@PathVariable Long courseId) {
+		return courseService.getLearningPaths(courseId);
+	}
+	
+	@PostMapping(path="/{courseId}/learning-path")
+	public Course addCourseToLearningPath(@PathVariable Long courseId, @RequestBody LearningPath learningPath) {
+		return courseService.addCourseToLearningPath(courseId, learningPath);
+	}
+	
+	@DeleteMapping(path="/{courseId}/learning-path")
+	public Course removeCourseFromLearningPath(@PathVariable Long courseId, @RequestBody LearningPath learningPath) {
+		return courseService.removeCourseFromLearningPath(courseId, learningPath);
 	}
 }

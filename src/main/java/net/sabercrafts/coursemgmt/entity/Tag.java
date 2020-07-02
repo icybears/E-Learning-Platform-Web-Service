@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -28,7 +29,7 @@ public class Tag implements Serializable{
 	private String slug;
 	
 	@ManyToMany(mappedBy="tags")
-	@JsonBackReference
+	@JsonIgnore
 	private Set<Course> courses;
 	
 	public Tag() {

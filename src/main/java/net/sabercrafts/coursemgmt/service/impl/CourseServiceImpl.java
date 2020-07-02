@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,14 @@ import org.springframework.stereotype.Service;
 import net.sabercrafts.coursemgmt.entity.Course;
 import net.sabercrafts.coursemgmt.entity.Enrollment;
 import net.sabercrafts.coursemgmt.entity.EnrollmentId;
+import net.sabercrafts.coursemgmt.entity.LearningPath;
 import net.sabercrafts.coursemgmt.entity.Module;
 import net.sabercrafts.coursemgmt.entity.Tag;
 import net.sabercrafts.coursemgmt.entity.User;
 import net.sabercrafts.coursemgmt.exception.CourseServiceException;
 import net.sabercrafts.coursemgmt.repository.CourseRepository;
 import net.sabercrafts.coursemgmt.repository.EnrollmentRepository;
+import net.sabercrafts.coursemgmt.repository.LearningPathRepository;
 import net.sabercrafts.coursemgmt.repository.ModuleRepository;
 import net.sabercrafts.coursemgmt.repository.TagRepository;
 import net.sabercrafts.coursemgmt.repository.UserRepository;
@@ -26,6 +30,7 @@ import net.sabercrafts.coursemgmt.ui.controller.model.request.CourseEditRequestM
 import net.sabercrafts.coursemgmt.utils.SlugGenerator;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
 	@Autowired
@@ -45,6 +50,9 @@ public class CourseServiceImpl implements CourseService {
 	
 	@Autowired
 	private ModuleRepository moduleRepository;
+	
+	@Autowired
+	private LearningPathRepository learningPathRepository;
 	
 
 	@Override
@@ -104,12 +112,8 @@ public class CourseServiceImpl implements CourseService {
 			
 			entity.setSlug(slug);
 		}
-
-
 		
 		mapper.map(course, entity);
-
-		
 
 		return courseRepository.save(entity);
 	}
@@ -197,8 +201,11 @@ public class CourseServiceImpl implements CourseService {
 	
 	@Override
 	public Course unenroll(Long courseId, Long userId) {
+		
 		Course course = fetchEntityById(courseId);
+		
 		Optional<User> user = userRepository.findById(userId);
+		
 		if(user.isEmpty()) {
 			throw new CourseServiceException("Cannot unenroll from course: User with id "+userId+" doesn't exist");
 		}
@@ -210,7 +217,58 @@ public class CourseServiceImpl implements CourseService {
 		course.removeEnrollment(enrollment.get());
 		return courseRepository.save(course);
 	}
+	
+	@Override
+	public List<LearningPath> getLearningPaths(Long courseId){
+		Course course = fetchEntityById(courseId);
+		
+		return new ArrayList<LearningPath>(course.getLearningPaths());
+	}
+	
+	@Override
+	public Course addCourseToLearningPath(Long courseId, LearningPath learningPath) {
+		
+		Course course = fetchEntityById(courseId);
+		
+		Optional<LearningPath> result = learningPathRepository.findById(learningPath.getId());
+		
+		if(result.isEmpty()) {
+			throw new CourseServiceException("LearningPath with id "+learningPath.getId()+" doesn't exist");
+		}
+		
+		boolean isNotDuplicate = course.getLearningPaths().add(learningPath);
+		
+		if(isNotDuplicate == false) {
+			throw new CourseServiceException("Course with id "+courseId+" already belongs to the learning path with id "+learningPath.getId());
+		}
+		
+		return courseRepository.save(course);
+		
+	}
+	
+	@Override
+	public Course removeCourseFromLearningPath(Long courseId, LearningPath learningPath) {
+		
+		Course course = fetchEntityById(courseId);
+		
+		Optional<LearningPath> result = learningPathRepository.findById(learningPath.getId());
+		
+		if(result.isEmpty()) {
+			throw new CourseServiceException("LearningPath with id "+learningPath.getId()+" doesn't exist");
+		}
+		
+		boolean exists = course.getLearningPaths().remove(learningPath);
+		
+		if(exists == false) {
+			throw new CourseServiceException("Course with id "+courseId+" does not belong to learning path with id "+learningPath.getId());
+		}
+		
+		return courseRepository.save(course);
+		
+	}
+	
 	private Course fetchEntityById(Long id) {
+		
 		Optional<Course> result = courseRepository.findById(id);
 
 		if (result.isEmpty()) {

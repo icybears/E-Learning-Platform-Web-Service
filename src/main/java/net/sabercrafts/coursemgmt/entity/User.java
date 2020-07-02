@@ -26,6 +26,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -72,6 +73,7 @@ public class User implements Serializable {
 	private Set<Course> createdCourses = new HashSet<>();
 
 	@OneToMany(mappedBy = "user",orphanRemoval = true)
+	@JsonManagedReference(value="user-enrollments")
 	private List<Enrollment> enrollments = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user",  orphanRemoval = true)

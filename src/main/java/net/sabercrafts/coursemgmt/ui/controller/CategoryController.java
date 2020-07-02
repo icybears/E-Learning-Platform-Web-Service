@@ -28,8 +28,6 @@ public class CategoryController {
 		return categoryService.getAll();
 	}
 	
-	
-	
 	@GetMapping(path="/{id}")
 	public Category getCategoryById(@PathVariable Long id) {
 		return categoryService.getById(id);

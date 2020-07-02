@@ -12,6 +12,8 @@ import javax.persistence.MapsId;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 @Entity
@@ -25,10 +27,12 @@ public class Enrollment implements Serializable {
 
 	@ManyToOne
 	@MapsId("courseId")
+	@JsonBackReference
 	private Course course;
 
 	@ManyToOne
 	@MapsId("userId")
+	@JsonBackReference(value="user-enrollments")
 	private User user;
 
 	@Column(name="completion_rate")

@@ -14,7 +14,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -37,6 +40,7 @@ public class LearningPath implements Serializable {
 	private String slug;
 
 	@ManyToMany(mappedBy = "learningPaths")
+	@JsonIgnore
 	private Set<Course> courses = new HashSet<>();
 
 	public LearningPath() {

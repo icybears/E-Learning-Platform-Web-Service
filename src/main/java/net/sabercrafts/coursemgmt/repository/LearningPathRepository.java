@@ -19,4 +19,5 @@ public interface LearningPathRepository  extends CrudRepository<LearningPath, Lo
 	
 	boolean existsBySlug(String slug);
 	
+	
 }

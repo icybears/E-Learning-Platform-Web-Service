@@ -65,7 +65,6 @@ public class Course implements Serializable{
 	@OneToMany(mappedBy = "course",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	@JsonManagedReference
 	private List<Module> modules = new ArrayList<>();
 
 	
@@ -80,13 +79,13 @@ public class Course implements Serializable{
 	
 	@OneToMany(mappedBy="course",cascade = CascadeType.ALL,
 			orphanRemoval = true)
+	@JsonManagedReference
 	private List<Enrollment> enrollments = new ArrayList<>();
 	
 	@ManyToMany
 	@JoinTable(name="course_tag", 
 	joinColumns= @JoinColumn(name="course_id"),
 	inverseJoinColumns = @JoinColumn(name="tag_id"))
-	@JsonManagedReference
 	private Set<Tag> tags = new HashSet<>();
 	
 	private boolean deleted;
