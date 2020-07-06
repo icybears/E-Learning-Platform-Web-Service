@@ -1,5 +1,6 @@
 package net.sabercrafts.coursemgmt.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -132,7 +133,7 @@ public class CourseServiceImpl implements CourseService {
 		Course entity = fetchEntityById(courseId);
 		entity.addModule(module);
 		
-		return courseRepository.save(entity);
+		return entity;
 		
 	}
 	@Override
@@ -145,7 +146,7 @@ public class CourseServiceImpl implements CourseService {
 		System.out.println("module: " + module.get() );
 		entity.removeModule(module.get());
 		
-		return courseRepository.save(entity);
+		return entity;
 		
 	}
 	
@@ -166,7 +167,7 @@ public class CourseServiceImpl implements CourseService {
 		}
 		entity.addTag(result.get());
 		
-		return courseRepository.save(entity);
+		return entity;
 	}
 	@Override
 	public Course removeTag(Long courseId, Long tagId) {
@@ -177,7 +178,7 @@ public class CourseServiceImpl implements CourseService {
 		}
 		entity.removeTag(result.get());
 		
-		return courseRepository.save(entity);
+		return entity;
 	}
 	
 	@Override
@@ -195,8 +196,9 @@ public class CourseServiceImpl implements CourseService {
 		
 		Enrollment enrollment = new Enrollment(course, user.get());
 		
+		
 		course.addEnrollment(enrollment);
-		return courseRepository.save(course);
+		return course;
 	}
 	
 	@Override
@@ -215,7 +217,7 @@ public class CourseServiceImpl implements CourseService {
 			throw new CourseServiceException("Cannot unenroll from course: Enrollment not found for courseId "+courseId+" and userId "+userId);
 		}
 		course.removeEnrollment(enrollment.get());
-		return courseRepository.save(course);
+		return course;
 	}
 	
 	@Override
@@ -242,7 +244,7 @@ public class CourseServiceImpl implements CourseService {
 			throw new CourseServiceException("Course with id "+courseId+" already belongs to the learning path with id "+learningPath.getId());
 		}
 		
-		return courseRepository.save(course);
+		return course;
 		
 	}
 	
@@ -263,8 +265,31 @@ public class CourseServiceImpl implements CourseService {
 			throw new CourseServiceException("Course with id "+courseId+" does not belong to learning path with id "+learningPath.getId());
 		}
 		
-		return courseRepository.save(course);
+		return course;
 		
+	}
+	
+	@Override
+	public Enrollment completeCourse(Long courseId, Long userId) {
+		Course course = fetchEntityById(courseId);
+		Optional<User> user = userRepository.findById(userId);
+		if(user.isEmpty()) {
+			throw new CourseServiceException("Cannot complete course: User with id "+userId+" doesn't exist");
+		}
+		
+		Optional<Enrollment> enrollment = enrollmentRepository.findById(new EnrollmentId(courseId, userId));
+		
+		if(enrollment.isEmpty() ) {
+			throw new CourseServiceException("Cannot complete course: User with id "+userId+" not enrolled in course with id "+courseId);
+		}
+		
+		Enrollment entity = enrollment.get();
+		
+		entity.setCompleted(true);
+		entity.setCompletionDate(LocalDateTime.now());
+		
+		
+		return entity;
 	}
 	
 	private Course fetchEntityById(Long id) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sabercrafts.coursemgmt.entity.Course;
+import net.sabercrafts.coursemgmt.entity.Enrollment;
 import net.sabercrafts.coursemgmt.entity.LearningPath;
 import net.sabercrafts.coursemgmt.entity.Module;
 import net.sabercrafts.coursemgmt.entity.Tag;
@@ -85,12 +86,12 @@ public class CourseController {
 		return courseService.removeTag(courseId, tagId);
 	}
 	
-	@PostMapping(path="/{courseId}/enroll")
+	@PostMapping(path="/{courseId}/enrollment")
 	public Course enrollUser(@PathVariable Long courseId, @RequestBody User user) {
 		return courseService.enroll(courseId, user.getId());
 	}
 	
-	@PostMapping(path="/{courseId}/unenroll")
+	@PostMapping(path="/{courseId}/unenrollment")
 	public Course unenrollUser(@PathVariable Long courseId, @RequestBody User user) {
 		return courseService.unenroll(courseId, user.getId());
 	}
@@ -108,5 +109,10 @@ public class CourseController {
 	@DeleteMapping(path="/{courseId}/learning-path")
 	public Course removeCourseFromLearningPath(@PathVariable Long courseId, @RequestBody LearningPath learningPath) {
 		return courseService.removeCourseFromLearningPath(courseId, learningPath);
+	}
+	
+	@PostMapping(path="/{courseId}/completion")
+	public Enrollment completeCourse(@PathVariable Long courseId, @RequestBody User user) {
+		return courseService.completeCourse(courseId, user.getId());
 	}
 }

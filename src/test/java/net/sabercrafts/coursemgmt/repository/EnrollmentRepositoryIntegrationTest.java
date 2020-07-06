@@ -40,7 +40,7 @@ class EnrollmentRepositoryIntegrationTest {
 	
 	@BeforeEach
 	void init() {
-		category = categoryRepository.save(new Category("Category Test","Description of category Test"));
+		category = categoryRepository.save(new Category("Category Test 33","Description of category Test"));
 		user = userRepository.save(new User("test","test","test","test@gmail.com","test123"));
 		course = courseRepository.save(new Course("Title","Description",category));
 		savedEnrollment = enrollmentRepository.save(new Enrollment(course, user));
@@ -62,11 +62,11 @@ class EnrollmentRepositoryIntegrationTest {
 		
 		Enrollment enrollment = enrollmentRepository.findById(savedEnrollment.getId()).get();
 		
-		enrollment.setCompletionRate(.5f);
+		enrollment.setCompleted(true);
 		
 		enrollmentRepository.save(enrollment);
 		
-		assertEquals(.5f,enrollmentRepository.findById(savedEnrollment.getId()).get().getCompletionRate());
+		assertEquals(true,enrollmentRepository.findById(savedEnrollment.getId()).get().isCompleted());
 	}
 	
 	@Test

@@ -25,6 +25,7 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -70,14 +71,12 @@ public class User implements Serializable {
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "user_created_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	@JsonIgnore
 	private Set<Course> createdCourses = new HashSet<>();
 
 	@OneToMany(mappedBy = "user",orphanRemoval = true)
 	@JsonManagedReference(value="user-enrollments")
 	private List<Enrollment> enrollments = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user",  orphanRemoval = true)
-	private List<UserLearningPathProgress> learningPathsProgress;
 	
 	private boolean deleted;
 	
@@ -99,35 +98,6 @@ public class User implements Serializable {
 	this.deleted = true;
 	}
 	
-	public void updateUserLearningProgress(LearningPath learningPath, Float progressRate) {
-		for (Iterator<UserLearningPathProgress> iterator = learningPathsProgress.iterator(); iterator.hasNext();) {
-			UserLearningPathProgress progress = iterator.next();
-
-			if (progress.getUser().equals(this) && progress.getLearningPath().equals(learningPath)) {
-				progress.setProgressRate(progressRate);
-				return;
-			}
-
-		}
-		// if doesn't exist, create it and set it
-		UserLearningPathProgress progress = new UserLearningPathProgress(this, learningPath, progressRate);
-		this.learningPathsProgress.add(progress);
-
-	}
-	
-	public void removeUserLearningProgress(LearningPath learningPath) {
-		for (Iterator<UserLearningPathProgress> iterator = learningPathsProgress.iterator(); iterator.hasNext();) {
-			UserLearningPathProgress progress = iterator.next();
-
-			if (progress.getUser().equals(this) && progress.getLearningPath().equals(learningPath)) {
-				iterator.remove();
-				progress.setUser(null);
-				progress.setLearningPath(null);
-				
-			}
-
-		}
-	}
 
 	public void enrollToCourse(Course course) {
 		Enrollment enrollment = new Enrollment(course, this);

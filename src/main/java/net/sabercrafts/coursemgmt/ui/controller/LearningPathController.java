@@ -24,7 +24,7 @@ public class LearningPathController {
 	private LearningPathService learningPathService;
 	
 	@GetMapping
-	public List<LearningPath> getAllCategories(){
+	public List<LearningPath> getAllLearningPaths(){
 		return learningPathService.getAll();
 	}
 	

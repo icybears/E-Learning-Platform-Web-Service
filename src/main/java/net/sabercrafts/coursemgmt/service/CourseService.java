@@ -3,6 +3,7 @@ package net.sabercrafts.coursemgmt.service;
 import java.util.List;
 
 import net.sabercrafts.coursemgmt.entity.Course;
+import net.sabercrafts.coursemgmt.entity.Enrollment;
 import net.sabercrafts.coursemgmt.entity.LearningPath;
 import net.sabercrafts.coursemgmt.entity.Module;
 import net.sabercrafts.coursemgmt.entity.Tag;
@@ -26,6 +27,7 @@ public interface CourseService {
 	List<LearningPath> getLearningPaths(Long courseId);
 	Course addCourseToLearningPath(Long courseId, LearningPath learningPath);
 	Course removeCourseFromLearningPath(Long courseId, LearningPath learningPath);
+	Enrollment completeCourse(Long courseId, Long userId);
 
 
 

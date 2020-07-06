@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sabercrafts.coursemgmt.entity.Course;
 import net.sabercrafts.coursemgmt.entity.User;
 import net.sabercrafts.coursemgmt.service.UserService;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserEditRequestModel;
@@ -25,7 +25,7 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping
-	public List<User> getAllCategories(){
+	public List<User> getAllUsers(){
 		return userService.getAll();
 	}
 	
@@ -49,5 +49,16 @@ public class UserController {
 		User user = new User();
 		user.setId(id);
 		userService.remove(user);
+		
+	}
+	
+	@PostMapping(path="/{userId}/course")
+	public Course createCourse(@PathVariable Long userId, @RequestBody Course course) {
+		return userService.createCourse(userId, course);
+	}
+	
+	@DeleteMapping(path="/{userId}/course/{courseId}")
+	public List<Course> deleteCourse(@PathVariable Long userId, @PathVariable Long courseId) {
+		return userService.removeCourse(courseId, userId);
 	}
 }

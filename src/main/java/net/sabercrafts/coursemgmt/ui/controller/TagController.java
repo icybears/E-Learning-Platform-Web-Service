@@ -24,7 +24,7 @@ public class TagController {
 	private TagService tagService;
 	
 	@GetMapping
-	public List<Tag> getAllCategories(){
+	public List<Tag> getAllTags(){
 		return tagService.getAll();
 	}
 	

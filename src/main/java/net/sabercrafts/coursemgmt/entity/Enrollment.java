@@ -34,13 +34,14 @@ public class Enrollment implements Serializable {
 	@MapsId("userId")
 	@JsonBackReference(value="user-enrollments")
 	private User user;
-
-	@Column(name="completion_rate")
-	private Float completionRate = 0f;
 	
 	@Column(name="created_at")
 	@CreationTimestamp
 	private LocalDateTime createdAt;
+	
+	private boolean completed;
+	
+	private LocalDateTime completionDate;
 	
 	public Enrollment() {
 		
