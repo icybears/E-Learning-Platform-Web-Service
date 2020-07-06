@@ -154,9 +154,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		
+		Optional<User> result = userRepository.findByEmail(email);
+		
+		if(result.isEmpty()) {
+			throw new UsernameNotFoundException(email);
+		}
+		User user = result.get();
+		
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getEncryptedPassword(), new ArrayList<>()); 
 	}
 	
 	}
