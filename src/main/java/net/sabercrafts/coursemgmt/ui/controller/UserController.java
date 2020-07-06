@@ -18,7 +18,7 @@ import net.sabercrafts.coursemgmt.service.UserService;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserEditRequestModel;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/users")
 public class UserController {
 	
 	@Autowired
@@ -52,12 +52,12 @@ public class UserController {
 		
 	}
 	
-	@PostMapping(path="/{userId}/course")
+	@PostMapping(path="/{userId}/courses")
 	public Course createCourse(@PathVariable Long userId, @RequestBody Course course) {
 		return userService.createCourse(userId, course);
 	}
 	
-	@DeleteMapping(path="/{userId}/course/{courseId}")
+	@DeleteMapping(path="/{userId}/courses/{courseId}")
 	public List<Course> deleteCourse(@PathVariable Long userId, @PathVariable Long courseId) {
 		return userService.removeCourse(courseId, userId);
 	}

@@ -14,7 +14,9 @@ public interface CourseService {
 	Course create(Course course);
 	Course getById(Long id);
 	Course getBySlug(String slug);
-	List<Course> getAll();
+	List<Course> getAll(int page, int limit);
+	List<Course> getByCategoryId(Long id, int page, int limit);
+	List<Course> getByTagId(Long id, int page, int limit);
 	Course edit(Long courseId, CourseEditRequestModel course);
 	boolean remove(Long id);
 	Course addModule(Long courseId, Module module);
@@ -29,8 +31,5 @@ public interface CourseService {
 	Course removeCourseFromLearningPath(Long courseId, LearningPath learningPath);
 	Enrollment completeCourse(Long courseId, Long userId);
 
-
-
-	
 	
 }

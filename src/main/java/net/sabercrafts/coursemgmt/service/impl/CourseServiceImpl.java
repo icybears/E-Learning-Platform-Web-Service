@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.sabercrafts.coursemgmt.entity.Course;
@@ -92,8 +94,25 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public List<Course> getAll() {
-		return courseRepository.findAll();
+	public List<Course> getAll(int page, int limit) {
+		
+		Pageable pageReq = PageRequest.of(page, limit);
+		
+	return	courseRepository.findAll(pageReq).getContent();
+	}
+	
+	@Override
+	public List<Course> getByCategoryId(Long id, int page, int limit) {
+		Pageable pageReq = PageRequest.of(page, limit);
+		return courseRepository.findByCategoryId(id, pageReq).getContent();
+		
+	}
+	
+	@Override
+	public List<Course> getByTagId(Long id, int page, int limit) {
+		Pageable pageReq = PageRequest.of(page, limit);
+		return courseRepository.findByTagId(id, pageReq).getContent();
+		
 	}
 
 	@Override
@@ -303,6 +322,8 @@ public class CourseServiceImpl implements CourseService {
 		
 		return result.get();
 	}
+
+	
 	
 	
 

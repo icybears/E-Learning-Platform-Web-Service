@@ -4,19 +4,24 @@ package net.sabercrafts.coursemgmt.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
 import net.sabercrafts.coursemgmt.entity.Course;
 
 
-public interface CourseRepository extends JpaRepository<Course, Long>{
+public interface CourseRepository extends PagingAndSortingRepository<Course, Long>{
 
-	@Override
-	List<Course> findAll();
+	Page<Course> findByCategoryId(Long id, Pageable pageable);
+	
+	Page<Course> findByTagId(Long id, Pageable pageReq);
 	
 	Optional<Course> findBySlug(String slug);
 	
 	boolean existsByTitle(String title);
 	
 	boolean existsBySlug(String slug);
+
 	
 }

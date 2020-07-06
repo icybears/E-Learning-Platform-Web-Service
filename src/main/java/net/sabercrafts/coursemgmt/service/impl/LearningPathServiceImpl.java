@@ -1,5 +1,6 @@
 package net.sabercrafts.coursemgmt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,10 +9,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.sabercrafts.coursemgmt.entity.Course;
 import net.sabercrafts.coursemgmt.entity.LearningPath;
 import net.sabercrafts.coursemgmt.exception.LearningPathServiceException;
 import net.sabercrafts.coursemgmt.repository.LearningPathRepository;
-import net.sabercrafts.coursemgmt.repository.UserLearningPathProgressRepository;
 import net.sabercrafts.coursemgmt.service.LearningPathService;
 import net.sabercrafts.coursemgmt.utils.SlugGenerator;
 
@@ -21,9 +22,6 @@ public class LearningPathServiceImpl implements LearningPathService {
 
 	@Autowired
 	private LearningPathRepository learningPathRepository;
-	
-	@Autowired
-	private UserLearningPathProgressRepository userLearningPathProgressRepository;
 
 	@Override
 	public LearningPath create(LearningPath learningPath) {
@@ -42,13 +40,7 @@ public class LearningPathServiceImpl implements LearningPathService {
 	@Override
 	public LearningPath getById(Long id) {
 
-		Optional<LearningPath> result = learningPathRepository.findById(id);
-
-		if (result.isEmpty()) {
-			throw new LearningPathServiceException("LearningPath with id " + id + " doesn't exist");
-		}
-
-		return result.get();
+		return fetchEntityById(id);
 
 	}
 
@@ -74,14 +66,9 @@ public class LearningPathServiceImpl implements LearningPathService {
 	@Override
 	public LearningPath edit(LearningPath learningPath) {
 
-		Optional<LearningPath> result = learningPathRepository.findById(learningPath.getId());
+		LearningPath entity = fetchEntityById(learningPath.getId());
 
-		if (result.isEmpty()) {
-			throw new LearningPathServiceException("LearningPath with id " + learningPath.getId() + " doesn't exist");
-
-		}
-
-		if(result.get().getTitle() != learningPath.getTitle()) {
+		if(entity.getTitle() != learningPath.getTitle()) {
 			
 			learningPath.setSlug(SlugGenerator.toSlug(learningPath.getTitle()));
 			
@@ -101,11 +88,30 @@ public class LearningPathServiceImpl implements LearningPathService {
 		if (result.isEmpty()) {
 			throw new LearningPathServiceException("LearningPath with id " + learningPath.getId() + " doesn't exist");
 		}
-		userLearningPathProgressRepository.deleteAllByLearningPath(learningPath.getId());
+		
 		learningPathRepository.delete(learningPath);
 		
 		return true;
 
 	}
 
+	@Override
+	public List<Course> getCoursesInLearningPath(Long id) {
+		
+		LearningPath learningPath = fetchEntityById(id);
+		
+		return new ArrayList<Course>(learningPath.getCourses());
+	}
+
+	private LearningPath fetchEntityById(Long id) {
+		
+		Optional<LearningPath> result = learningPathRepository.findById(id);
+
+		if (result.isEmpty()) {
+			throw new LearningPathServiceException("LearningPath with id " + id + " doesn't exist");
+
+		}
+
+		return result.get();
+	}
 }

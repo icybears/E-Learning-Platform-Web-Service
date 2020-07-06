@@ -17,7 +17,7 @@ import net.sabercrafts.coursemgmt.entity.Tag;
 import net.sabercrafts.coursemgmt.service.TagService;
 
 @RestController
-@RequestMapping("api/v1/tag")
+@RequestMapping("api/v1/tags")
 public class TagController {
 	
 	@Autowired

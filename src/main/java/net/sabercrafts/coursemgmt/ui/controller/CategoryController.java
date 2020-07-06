@@ -17,7 +17,7 @@ import net.sabercrafts.coursemgmt.entity.Category;
 import net.sabercrafts.coursemgmt.service.CategoryService;
 
 @RestController
-@RequestMapping("api/v1/category")
+@RequestMapping("api/v1/categories")
 public class CategoryController {
 	
 	@Autowired

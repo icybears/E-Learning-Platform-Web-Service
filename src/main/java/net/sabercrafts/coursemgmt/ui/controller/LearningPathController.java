@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sabercrafts.coursemgmt.entity.Course;
 import net.sabercrafts.coursemgmt.entity.LearningPath;
 import net.sabercrafts.coursemgmt.service.LearningPathService;
 
 @RestController
-@RequestMapping("api/v1/learning-path")
+@RequestMapping("api/v1/learning-paths")
 public class LearningPathController {
 	
 	@Autowired
@@ -48,5 +49,10 @@ public class LearningPathController {
 		LearningPath learningPath = new LearningPath();
 		learningPath.setId(id);
 		learningPathService.remove(learningPath);
+	}
+	
+	@GetMapping(path="/{id}/courses")
+	public List<Course> getCoursesInLearningPath(@PathVariable Long id) {
+		return learningPathService.getCoursesInLearningPath(id);
 	}
 }
