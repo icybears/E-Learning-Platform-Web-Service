@@ -9,6 +9,9 @@ import javax.transaction.Transactional;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import net.sabercrafts.coursemgmt.entity.Course;
@@ -18,6 +21,7 @@ import net.sabercrafts.coursemgmt.repository.CourseRepository;
 import net.sabercrafts.coursemgmt.repository.UserRepository;
 import net.sabercrafts.coursemgmt.service.UserService;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserEditRequestModel;
+import net.sabercrafts.coursemgmt.ui.controller.model.request.UserRegistrationRequestModel;
 import net.sabercrafts.coursemgmt.utils.SlugGenerator;
 
 @Service
@@ -32,9 +36,13 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private CourseRepository courseRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
+	
 
 	@Override
-	public User create(User user) {
+	public User create(UserRegistrationRequestModel user) {
 
 		if(userRepository.existsByUsername(user.getUsername())) {
 			throw new UserServiceException("Username "+user.getUsername()+" already exists");
@@ -44,7 +52,9 @@ public class UserServiceImpl implements UserService {
 			throw new UserServiceException("Email "+user.getEmail()+" already exists");
 		}
 
-		return userRepository.save(user);
+		User entity = mapper.map(user,User.class);
+			entity.setEncryptedPassword(bcrypt.encode(user.getPassword()));
+		return userRepository.save(entity);
 	}
 
 	@Override
@@ -141,6 +151,12 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return new ArrayList<>(userEntity.getCreatedCourses());
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	}

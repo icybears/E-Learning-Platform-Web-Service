@@ -111,7 +111,7 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public List<Course> getByTagId(Long id, int page, int limit) {
 		Pageable pageReq = PageRequest.of(page, limit);
-		return courseRepository.findByTagId(id, pageReq).getContent();
+		return courseRepository.findByTagsId(id, pageReq).getContent();
 		
 	}
 

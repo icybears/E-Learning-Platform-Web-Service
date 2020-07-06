@@ -19,7 +19,7 @@ public class AppExceptionHandler {
 			TagServiceException.class,
 			UserServiceException.class
 			})
-	public ResponseEntity<Object> handleCourseServiceException(CourseServiceException ex, WebRequest request){
+	public ResponseEntity<Object> handleCourseServiceException(Exception ex, WebRequest request){
 		return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	

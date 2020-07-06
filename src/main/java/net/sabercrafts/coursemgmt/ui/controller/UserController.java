@@ -16,6 +16,7 @@ import net.sabercrafts.coursemgmt.entity.Course;
 import net.sabercrafts.coursemgmt.entity.User;
 import net.sabercrafts.coursemgmt.service.UserService;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserEditRequestModel;
+import net.sabercrafts.coursemgmt.ui.controller.model.request.UserRegistrationRequestModel;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -35,7 +36,7 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public User createUser(@RequestBody User user) {
+	public User createUser(@RequestBody UserRegistrationRequestModel user) {
 		return userService.create(user);
 	}
 	

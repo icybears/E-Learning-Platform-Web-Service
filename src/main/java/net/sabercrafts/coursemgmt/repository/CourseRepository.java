@@ -15,7 +15,7 @@ public interface CourseRepository extends PagingAndSortingRepository<Course, Lon
 
 	Page<Course> findByCategoryId(Long id, Pageable pageable);
 	
-	Page<Course> findByTagId(Long id, Pageable pageReq);
+	Page<Course> findByTagsId(Long id, Pageable pageReq);
 	
 	Optional<Course> findBySlug(String slug);
 	
