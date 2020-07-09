@@ -19,6 +19,7 @@ import net.sabercrafts.coursemgmt.entity.User;
 import net.sabercrafts.coursemgmt.exception.UserServiceException;
 import net.sabercrafts.coursemgmt.repository.CourseRepository;
 import net.sabercrafts.coursemgmt.repository.UserRepository;
+import net.sabercrafts.coursemgmt.security.UserPrincipal;
 import net.sabercrafts.coursemgmt.service.UserService;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserEditRequestModel;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserRegistrationRequestModel;
@@ -163,7 +164,7 @@ public class UserServiceImpl implements UserService {
 		}
 		User user = result.get();
 		
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getEncryptedPassword(), new ArrayList<>()); 
+		return new UserPrincipal(user);
 	}
 	
 	}

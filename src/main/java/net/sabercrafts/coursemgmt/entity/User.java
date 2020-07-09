@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,6 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -70,7 +70,9 @@ public class User implements Serializable {
 	private String info;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(name = "user_created_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	@JoinTable(name = "user_created_course", 
+	joinColumns = @JoinColumn(name = "user_id"), 
+	inverseJoinColumns = @JoinColumn(name = "course_id"))
 	@JsonIgnore
 	private Set<Course> createdCourses = new HashSet<>();
 
@@ -79,6 +81,12 @@ public class User implements Serializable {
 	private List<Enrollment> enrollments = new ArrayList<>();
 	
 	private boolean deleted;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="user_role", 
+	joinColumns = @JoinColumn(name="user_id"),
+	inverseJoinColumns = @JoinColumn(name="role_id"))
+	private Set<Role> roles;
 	
 	public User() {
 		

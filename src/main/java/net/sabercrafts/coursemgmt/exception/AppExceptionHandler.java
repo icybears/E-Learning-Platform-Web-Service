@@ -11,16 +11,22 @@ import net.sabercrafts.coursemgmt.ui.controller.model.response.ErrorResponse;
 
 @ControllerAdvice
 public class AppExceptionHandler {
-	
-	@ExceptionHandler(value = {
+
+	@ExceptionHandler(value = { 
 			CourseServiceException.class, 
 			CategoryServiceException.class,
-			LearningPathServiceException.class,
+			LearningPathServiceException.class, 
 			TagServiceException.class,
-			UserServiceException.class
+			UserServiceException.class 
 			})
-	public ResponseEntity<Object> handleCourseServiceException(Exception ex, WebRequest request){
-		return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<Object> handleCourseServiceException(Exception ex, WebRequest request) {
+		return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), new HttpHeaders(),
+				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
+	@ExceptionHandler(value= {RuntimeException.class})
+	public ResponseEntity<Object> handleRuntimeExceptions(RuntimeException ex, WebRequest request) {
+		return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), new HttpHeaders(),
+				HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

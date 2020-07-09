@@ -58,7 +58,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 
 		
-		String email = ((User) auth.getPrincipal()).getUsername();
+		String email = ((UserPrincipal) auth.getPrincipal()).getUsername();
 
 		
 		String token = Jwts.builder().setSubject(email)
