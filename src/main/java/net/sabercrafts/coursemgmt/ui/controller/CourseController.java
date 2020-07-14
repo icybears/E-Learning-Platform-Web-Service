@@ -70,7 +70,7 @@ public class CourseController {
 	
 	@GetMapping(path="/{courseId}/modules")
 	public List<Module> getCourseModules(@PathVariable Long courseId){
-		return courseService.getById(courseId).getModules();
+		return courseService.getCourseModules(courseId);
 	}
 	
 	@PostMapping(path="/{courseId}/modules")

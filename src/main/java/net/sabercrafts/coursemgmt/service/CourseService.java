@@ -15,7 +15,7 @@ import net.sabercrafts.coursemgmt.ui.controller.model.request.CourseEditRequestM
 public interface CourseService {
 
 	
-	
+	@PreAuthorize("isAuthenticated() or hasRole('ADMIN')")
 	Course create(Course course);
 	
 	Course getById(Long id);
@@ -39,6 +39,8 @@ public interface CourseService {
 	
 	@PreAuthorize("isAuthenticated() and ( @permissionChecker.isCourseOwner(authentication, #courseId) or hasRole('ADMIN') )")
 	Course removeModule(Long courseId, Long moduleId);
+	
+	List<Module> getCourseModules(Long courseId);
 	
 	@PreAuthorize("isAuthenticated() and ( @permissionChecker.isCourseOwner(authentication, #courseId) or hasRole('ADMIN') )")
 	Course addTag(Long courseId, Long tagId);
