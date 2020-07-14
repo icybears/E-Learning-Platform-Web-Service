@@ -14,7 +14,7 @@ This is a Spring boot based application that was built for learning and practici
 ## Technical features
 
 * Layered Architecture
-* Implemented the Repository pattern for the DAL
+* Implemented the Repository pattern for the DAL with Hibernate
 * Includes Integration tests for the DAL
 * Authentification and authorization with JWT and Spring security
 * Secured service endpoints
