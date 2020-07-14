@@ -166,5 +166,24 @@ public class UserServiceImpl implements UserService {
 		
 		return new UserPrincipal(user);
 	}
+
+	@Override
+	public User getByEmail(String email) {
+		Optional<User> result = userRepository.findByEmail(email);
+		
+		if(result.isEmpty()) {
+			throw new UserServiceException("User with email "+email+ "doesn't exist");
+		}
+		return result.get();
+		
+	}
+
+	@Override
+	public List<Course> getUserCreatedCourses(Long userId) {
+		
+		User user = fetchEntityById(userId);
+		
+		return new ArrayList<>(user.getCreatedCourses());
+	}
 	
 	}

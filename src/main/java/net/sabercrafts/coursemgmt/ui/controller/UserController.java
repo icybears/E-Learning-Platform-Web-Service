@@ -1,5 +1,6 @@
 package net.sabercrafts.coursemgmt.ui.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.sabercrafts.coursemgmt.entity.Course;
 import net.sabercrafts.coursemgmt.entity.User;
+import net.sabercrafts.coursemgmt.security.UserPrincipal;
 import net.sabercrafts.coursemgmt.service.UserService;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserEditRequestModel;
 import net.sabercrafts.coursemgmt.ui.controller.model.request.UserRegistrationRequestModel;
@@ -25,6 +27,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+
 	@GetMapping
 	public List<User> getAllUsers(){
 		return userService.getAll();
@@ -40,10 +43,13 @@ public class UserController {
 		return userService.create(user);
 	}
 	
+	
 	@PutMapping(path="/{id}")
 	public User editUser(@PathVariable Long id, @RequestBody UserEditRequestModel user) {
+	
 		return userService.edit(id, user);
 	}
+
 
 	@DeleteMapping(path="/{id}")
 	public void deleteUser(@PathVariable Long id) {
@@ -52,6 +58,12 @@ public class UserController {
 		userService.remove(user);
 		
 	}
+	
+	@GetMapping(path="/{userId}/courses")
+	public List<Course> getUserCreatedCourses(@PathVariable Long userId) {
+		return userService.getUserCreatedCourses(userId);
+	}
+	
 	
 	@PostMapping(path="/{userId}/courses")
 	public Course createCourse(@PathVariable Long userId, @RequestBody Course course) {

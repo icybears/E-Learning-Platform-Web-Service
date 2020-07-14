@@ -21,12 +21,14 @@ public class UserPrincipal implements UserDetails {
 	private static final long serialVersionUID = -4213512976367360981L;
 
 	private User user;
+	private Long id;
 
 	public UserPrincipal() {
 	}
 
 	public UserPrincipal(User user) {
 		this.user = user;
+		this.id = user.getId();
 	}
 
 	@Override
